@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 @RestController
 @RequestMapping("/payment")
-public class PaymentController {
+public class MainController {
 
     private final String sharedKey = "SHARED_KEY";
 
@@ -16,6 +18,10 @@ public class PaymentController {
     private static final String ERROR_STATUS = "error";
     private static final int CODE_SUCCESS = 100;
     private static final int AUTH_FAILURE = 102;
+    private static int age;
+    private static String firstName;
+    private static String lastName;
+    private static String email;
 
     String url = "jdbc:postgresql://127.0.0.1:5432/pgs";
     String username = "username";
@@ -25,14 +31,43 @@ public class PaymentController {
 
 
     @GetMapping
-    public BaseResponse showStatus() {
-        return new BaseResponse(SUCCESS_STATUS, 1);
+    public CustomerResponseGet showStatus(@RequestParam(value = "key") int key) {
+
+        final CustomerResponseGet responseGet;
+
+        if (key != 0) {
+
+                try {
+                    Connection db = DriverManager.getConnection(url, username, password);
+                    String sql = "select * from public.customers WHERE id = ?";
+                    final PreparedStatement statement = db.prepareStatement(sql);
+                    statement.setInt(1, key);
+                    ResultSet resultSet = statement.executeQuery();
+                    while (resultSet.next()) {
+                        age = resultSet.getInt("age");
+                        firstName = resultSet.getString("firstname");
+                        lastName = resultSet.getString("firstname");
+                        email = resultSet.getString("email");
+                    }
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+
+            // Process the request
+            // ....
+            // Return success response to the client.
+            responseGet = new CustomerResponseGet(firstName, lastName, email, age);
+        } else {
+            responseGet = new CustomerResponseGet(firstName, lastName, email, age);
+        }
+        return responseGet;
     }
 
     @PostMapping("/pay")
-    public BaseResponse pay(@RequestParam(value = "key") String key, @RequestBody PaymentRequest request) {
+    public CustomerResponse pay(@RequestParam(value = "key") String key, @RequestBody CustomerRequest request) {
 
-        final BaseResponse response;
+        final CustomerResponse response;
 
         if (sharedKey.equalsIgnoreCase(key)) {
             int age = request.getAge();
@@ -58,9 +93,9 @@ public class PaymentController {
             // Process the request
             // ....
             // Return success response to the client.
-            response = new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
+            response = new CustomerResponse(SUCCESS_STATUS, CODE_SUCCESS);
         } else {
-            response = new BaseResponse(ERROR_STATUS, AUTH_FAILURE);
+            response = new CustomerResponse(ERROR_STATUS, AUTH_FAILURE);
         }
         return response;
     }

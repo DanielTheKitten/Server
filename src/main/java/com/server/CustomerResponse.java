@@ -1,11 +1,11 @@
 package com.server;
 
-public class BaseResponse {
+public class CustomerResponse {
 
     private final String status;
     private final Integer code;
 
-    public BaseResponse(String status, Integer code) {
+    public CustomerResponse(String status, Integer code) {
         this.status = status;
         this.code = code;
     }

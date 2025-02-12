@@ -1,12 +1,18 @@
 package com.server;
 
-public class PaymentRequest {
+public class CustomerResponseGet {
 
-    private int userId;
     private String firstName;
     private String lastName;
     private String email;
     private int age;
+
+    public CustomerResponseGet(String firstName, String lastName, String email, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
+    }
 
     public String getFirstName() {
         return firstName;
