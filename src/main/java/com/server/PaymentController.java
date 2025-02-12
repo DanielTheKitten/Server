@@ -3,8 +3,8 @@ package com.server;
 import org.springframework.web.bind.annotation.*;
 import java.sql.DriverManager;
 import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 @RestController
 @RequestMapping("/payment")
@@ -35,16 +35,21 @@ public class PaymentController {
         final BaseResponse response;
 
         if (sharedKey.equalsIgnoreCase(key)) {
-            int userId = request.getUserId();
-            String itemId = request.getItemId();
-            double discount = request.getDiscount();
+            int age = request.getAge();
+            String firstName =request.getFirstName();
+            String lastName = request.getLastName();
+            String email = request.getEmail();
 
             {
                 try {
                     Connection db = DriverManager.getConnection(url, username, password);
-                    Statement stmt = db.createStatement();
-                    String sql = "INSERT INTO public.customers (id, firstname, lastname, email, age) VALUES((select id from public.customers ORDER BY id desc limit 1)+1, '1', '1', '1', 0);";
-                    stmt.execute(sql);
+                    String sql = "INSERT INTO public.customers (id, firstname, lastname, email, age) VALUES((select id from public.customers ORDER BY id desc limit 1)+1,?, ?, ?, ?);";
+                    final PreparedStatement statement = db.prepareStatement(sql);
+                    statement.setString(1, firstName);
+                    statement.setString(2, lastName);
+                    statement.setString(3, email);
+                    statement.setInt(4, age);
+                    statement.executeUpdate();
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
