@@ -56,6 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const payment = document.getElementById('payment').value;
 
         // Здесь можно добавить логику для обработки оплаты
+
+        let data = {name: 'Example'};
+
+        let response = fetch('http://localhost:8080/payment/pay?key=SHARED_KEY', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'name': name})
+        });
         alert(`Заказ оформлен! Спасибо, ${name}!`);
         cart.length = 0;
         updateCart();

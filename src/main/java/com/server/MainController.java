@@ -29,7 +29,7 @@ public class MainController {
 
 
 
-
+    @CrossOrigin
     @GetMapping
     public CustomerResponseGet showStatus(@RequestParam(value = "key") int key) {
 
@@ -63,7 +63,7 @@ public class MainController {
         }
         return responseGet;
     }
-
+    @CrossOrigin
     @PostMapping("/pay")
     public CustomerResponse pay(@RequestParam(value = "key") String key, @RequestBody CustomerRequest request) {
 

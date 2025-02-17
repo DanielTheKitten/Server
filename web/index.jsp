@@ -37,30 +37,26 @@
     <section id="checkout-form" class="hidden">
         <h2>Оформление заказа</h2>
         <form id="order-form">
-            <label for="name">Имя:</label>
+            <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
 
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
 
-            <label for="address">Адрес:</label>
+            <label for="address">Address:</label>
             <input type="text" id="address" name="address" required>
 
-            <label for="payment">Способ оплаты:</label>
+            <label for="payment">Payment method:</label>
             <select id="payment" name="payment" required>
-                <option value="credit-card">Кредитная карта</option>
+                <option value="credit-card">Credit Card</option>
                 <option value="paypal">PayPal</option>
-                <option value="cash">Наличные при получении</option>
             </select>
 
-            <button type="submit">Оплатить</button>
+            <button type="submit">Pay</button>
         </form>
     </section>
 </main>
 
-<footer>
-    <p>&copy; 2023 Интернет-магазин</p>
-</footer>
 
 <script src="script.js"></script>
 </body>
