@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Отправка формы заказа
     orderForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const name = document.getElementById('name').value;
+        const firstName = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const address = document.getElementById('address').value;
         const payment = document.getElementById('payment').value;
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({'name': name})
+            body: JSON.stringify({"firstName": firstName, "email":email})
         });
         alert(`Заказ оформлен! Спасибо, ${name}!`);
         cart.length = 0;
